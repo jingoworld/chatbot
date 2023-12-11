@@ -1,29 +1,14 @@
-// in MessageParser.js
-import React from "react";
+// src/chatbot/MessageParser.js
 
-const MessageParser = ({ children, actions }) => {
-  const parse = (message) => {
-    if (message.includes("안녕")) {
-      actions.handleHello();
-    }
-    if (message.includes("개")) {
-      actions.handleDog();
-    }
-    if (message.includes("hi")) {
-      actions.handleHi();
-    }
-  };
+class MessageParser {
+  constructor(actionProvider) {
+    this.actionProvider = actionProvider;
+  }
 
-  return (
-    <div>
-      {React.Children.map(children, (child) => {
-        return React.cloneElement(child, {
-          parse: parse,
-          actions,
-        });
-      })}
-    </div>
-  );
-};
+  parse(message) {
+    // 사용자의 메시지를 처리하는 로직
+    this.actionProvider.handleUserMessage(message);
+  }
+}
 
 export default MessageParser;

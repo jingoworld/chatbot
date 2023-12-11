@@ -9,6 +9,9 @@ const MessageParser = ({ children, actions }) => {
     if (message.includes("개")) {
       actions.handleDog();
     }
+    if (message.includes("hi")) {
+      actions.handleHi();
+    }
   };
 
   return (

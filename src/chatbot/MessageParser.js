@@ -1,21 +1,26 @@
-// src/chatbot/MessageParser.js
+// in MessageParser.js
+import React from "react";
 
-class MessageParser {
-  constructor(actionProvider, state) {
-    this.actionProvider = actionProvider;
-    this.state = state;
-  }
-
-  parse(message) {
-    const lowercase = message.toLowerCase();
-
-    if (lowercase.includes("hello")) {
-      this.actionProvider.greet();
+const MessageParser = ({ children, actions }) => {
+  const parse = (message) => {
+    if (message.includes("안녕")) {
+      actions.handleHello();
     }
-    if (lowercase.includes("몇 살이니?")) {
-      this.actionProvider.greet();
+    if (message.includes("개")) {
+      actions.handleDog();
     }
-  }
-}
+  };
+
+  return (
+    <div>
+      {React.Children.map(children, (child) => {
+        return React.cloneElement(child, {
+          parse: parse,
+          actions,
+        });
+      })}
+    </div>
+  );
+};
 
 export default MessageParser;

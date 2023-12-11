@@ -1,25 +1,42 @@
-// src/chatbot/ActionProvider.js
+// in ActionProvider.jsx
+import React from "react";
 
-class ActionProvider {
-  constructor(createChatBotMessage, setStateFunc, createClientMessage) {
-    this.createChatBotMessage = createChatBotMessage;
-    this.setState = setStateFunc;
-    this.createClientMessage = createClientMessage;
-  }
+const ActionProvider = ({ createChatBotMessage, setState, children }) => {
+  const handleHello = () => {
+    const botMessage = createChatBotMessage(
+      "응 그래 반갑다. 근데 왜 반말이니?"
+    );
 
-  // Example action
-  greet() {
-    const greetingMessage = this.createChatBotMessage("Hi, friend!");
-    this.updateChatbotState(greetingMessage);
-  }
-
-  // Function to update the state of the chatbot
-  updateChatbotState(message) {
-    this.setState((prevState) => ({
-      ...prevState,
-      messages: [...prevState.messages, message],
+    setState((prev) => ({
+      ...prev,
+      messages: [...prev.messages, botMessage],
     }));
-  }
-}
+  };
+
+  const handleDog = () => {
+    const botMessage = createChatBotMessage("개를 찾는군, 여기 개 사진이다.", {
+      widget: "dogPicture",
+    });
+
+    setState((prev) => ({
+      ...prev,
+      messages: [...prev.messages, botMessage],
+    }));
+  };
+
+  // Put the handleHello function in the actions object to pass to the MessageParser
+  return (
+    <div>
+      {React.Children.map(children, (child) => {
+        return React.cloneElement(child, {
+          actions: {
+            handleHello,
+            handleDog,
+          },
+        });
+      })}
+    </div>
+  );
+};
 
 export default ActionProvider;
